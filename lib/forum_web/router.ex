@@ -1,4 +1,5 @@
 defmodule ForumWeb.Router do
+  # alias ForumWeb.PostController
   use ForumWeb, :router
 
   pipeline :browser do
@@ -18,16 +19,17 @@ defmodule ForumWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
-
+    # torna Json html
     get "/users", PageController, :users
 
     get "/user", PageController, :user
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", ForumWeb do
-  #   pipe_through :api
-  # end
+  scope "/api", ForumWeb do
+    pipe_through :api
+    resources "/posts", PostController, except: [:new, :edit]
+  end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
   if Application.compile_env(:forum, :dev_routes) do
